@@ -8,19 +8,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String _gifUrl = "";
+  var _gifsUrl = <String>[];
   GifsFetch _gifsFetch = new GifsFetch();
-  String defaultGif = "https://media0.giphy.com/media/xc0Sj21uaOo3Dvbb5n/giphy.gif?cid=ecf05e47qbzfc1sf5pcpgg3inba02oti9zxxmczviiz2h08z&rid=giphy.gif&ct=g";
+  String defaultGif = "https://media3.giphy.com/media/d2W7eZX5z62ziqdi/200w.gif";
 
   void updateData(gifData) {
     setState(() {
       if (gifData != null) {
         debugPrint("from home_page updateData:");
         debugPrint(jsonEncode(gifData));
-        _gifUrl = gifData["data"][0]["images"]["fixed_width"]["url"].toString();
+        for (int i = 0; i < 8; i++) {
+        _gifsUrl.add(gifData["data"][i]["images"]["fixed_width"]["url"].toString());
+        }
       }
       else {
-        _gifUrl = defaultGif;
+        _gifsUrl.forEach((element) => element=defaultGif);
       }
     });
   }
@@ -31,7 +33,6 @@ class _HomePageState extends State<HomePage> {
     try {
       var dataDecoded = await _gifsFetch.getGifs(searchString);
       updateData(dataDecoded);
-      //setState(() {});
     }
     catch (e) {
       print(e);
@@ -51,7 +52,17 @@ class _HomePageState extends State<HomePage> {
                 decoration: InputDecoration(hintText: "Search Giphy"),
                 onSubmitted: (String searchString) => _getGifs(searchString),
               ),
-              if (_gifUrl != "") Image.network(_gifUrl)
+              if (_gifsUrl != null)
+                Container(
+                  padding: EdgeInsets.all(5),
+                  height: 600,
+                  child:
+                    ListView.builder(
+                      itemCount: _gifsUrl.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Image.network(_gifsUrl[index]);
+                    })
+                )
             ],
           ),
         ),
