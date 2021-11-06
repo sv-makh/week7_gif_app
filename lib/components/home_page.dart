@@ -18,11 +18,13 @@ class _HomePageState extends State<HomePage> {
         debugPrint("from home_page updateData:");
         debugPrint(jsonEncode(gifData));
         for (int i = 0; i < 8; i++) {
-        _gifsUrl.add(gifData["data"][i]["images"]["fixed_width"]["url"].toString());
+          _gifsUrl.add(gifData["data"][i]["images"]["fixed_width"]["url"].toString());
         }
       }
       else {
-        _gifsUrl.forEach((element) => element=defaultGif);
+        for (int i = 0; i < 8; i++) {
+          _gifsUrl.add(defaultGif);
+        }
       }
     });
   }
@@ -58,9 +60,14 @@ class _HomePageState extends State<HomePage> {
                   height: 600,
                   child:
                     ListView.builder(
-                      itemCount: _gifsUrl.length,
+                      itemCount: _gifsUrl.length~/2,
                       itemBuilder: (BuildContext context, int index) {
-                        return Image.network(_gifsUrl[index]);
+                        return
+                          Row(
+                            children: [
+                              Image.network(_gifsUrl[index*2], width: 185,),
+                              Image.network(_gifsUrl[index*2+1], width: 185,),
+                            ]);
                     })
                 )
             ],
