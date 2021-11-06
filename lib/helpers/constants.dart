@@ -1,0 +1,1 @@
+const giphyApiKey = "zIMgtApjVjS7hHlFPR1zJQt0ovogdsMY";
