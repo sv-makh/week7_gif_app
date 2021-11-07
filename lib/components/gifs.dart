@@ -1,12 +1,10 @@
 import 'package:week7_gif_app/helpers/fetch.dart';
 import 'package:week7_gif_app/helpers/constants.dart';
 
-const giphyUrl = "https://api.giphy.com/v1/gifs/search";
-
 class GifsFetch {
   Future<dynamic> getGifs(String searchString) async {
-    FetchHelper fetchData = new FetchHelper(
-        "$giphyUrl?api_key=$giphyApiKey&q=$searchString&limit=8&offset=0&rating=g&lang=en");
+    FetchHelper fetchData = FetchHelper(
+        "$giphyUrl?api_key=$giphyApiKey&q=$searchString&limit=$numberOfGifs&offset=0&rating=g");
 
     var decodedData = await fetchData.getData();
     return decodedData;
